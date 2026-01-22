@@ -100,9 +100,9 @@ if st.session_state.rounds:
                 if p1 == p2 or (p1, p2) in processed: continue
                 net = matrix[p1][p2] - matrix[p2][p1]
                 if net > 0:
-                    detail_results.append(f"• **{p1}** 欠 **{p2}** ： `{net}` 元")
+                    detail_results.append(f"• **{p1}** 给 **{p2}** ： `{net}` 元")
                 elif net < 0:
-                    detail_results.append(f"• **{p2}** 欠 **{p1}** ： `{abs(net)}` 元")
+                    detail_results.append(f"• **{p2}** 给 **{p1}** ： `{abs(net)}` 元")
                 processed.add((p1, p2))
                 processed.add((p2, p1))
         
