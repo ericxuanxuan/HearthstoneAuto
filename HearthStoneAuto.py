@@ -1,47 +1,32 @@
 import streamlit as st
 import pandas as pd
-import random
 
 # 页面配置
 st.set_page_config(page_title="8人游戏结算系统", layout="centered")
 
-# --- 满屏炸弹爆炸特效函数 ---
+# --- 满屏文字特效函数 (右侧精简版) ---
 def trigger_feng_explosion():
-    # 1. 生成炸弹雨 HTML
-    # 创建 20 个随机位置的炸弹
-    bombs_html = ""
-    for i in range(20):
-        left = random.randint(0, 95)
-        duration = random.uniform(2, 4)
-        delay = random.uniform(0, 2)
-        size = random.randint(30, 60)
-        bombs_html += f"""
-        <div class="bomb-emoji" style="left: {left}%; animation: float-bomb {duration}s linear {delay}s infinite;">
-            💣
-        </div>
-        """
-
-    # 2. 生成“日你个冯”文字团 (贴右侧版)
+    # 锚点设在极右侧 (right: 2%)，字号使用较小的 vw 单位
     elements = [
-        {"top": "50%", "right": "5%", "size": "18vw", "delay": "0s"},
-        {"top": "35%", "right": "8%", "size": "12vw", "delay": "0.5s"},
-        {"top": "65%", "right": "6%", "size": "14vw", "delay": "1s"},
-        {"top": "42%", "right": "12%", "size": "10vw", "delay": "1.5s"},
-        {"top": "58%", "right": "4%", "size": "15vw", "delay": "2s"},
-        {"top": "25%", "right": "10%", "size": "8vw", "delay": "0.3s"},
-        {"top": "75%", "right": "7%", "size": "11vw", "delay": "0.8s"},
-        {"top": "15%", "right": "9%", "size": "9vw", "delay": "0.1s"},
+        {"top": "50%", "right": "2%", "size": "14vw", "delay": "0s"},
+        {"top": "35%", "right": "4%", "size": "9vw", "delay": "0.5s"},
+        {"top": "65%", "right": "3%", "size": "10vw", "delay": "1s"},
+        {"top": "42%", "right": "6%", "size": "7vw", "delay": "1.5s"},
+        {"top": "58%", "right": "2%", "size": "11vw", "delay": "2s"},
+        {"top": "25%", "right": "5%", "size": "6vw", "delay": "0.3s"},
+        {"top": "75%", "right": "4%", "size": "8vw", "delay": "0.8s"},
+        {"top": "15%", "right": "5%", "size": "5vw", "delay": "0.1s"},
     ]
     
-    texts_html = ""
+    html_content = ""
     for i, el in enumerate(elements):
-        texts_html += f"""
+        html_content += f"""
         <div style="
             position: fixed;
             top: {el['top']};
             right: {el['right']};
             transform: translateY(-50%);
-            z-index: {20000 + i};
+            z-index: {10000 + i};
             pointer-events: none;
             animation: pop-and-shake-right 3s infinite {el['delay']};
             opacity: 0;
@@ -50,7 +35,7 @@ def trigger_feng_explosion():
             <h1 style="
                 font-size: {el['size']};
                 color: #FF0000;
-                text-shadow: 2px 2px 10px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                text-shadow: 1px 1px 5px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
                 font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
                 white-space: nowrap;
                 margin: 0;
@@ -61,44 +46,14 @@ def trigger_feng_explosion():
         </div>
         """
 
-    # 3. 组合并注入 CSS
     full_html = f"""
-        <div class="explosion-container">
-            {bombs_html}
-            {texts_html}
-        </div>
+        {html_content}
         <style>
-            .explosion-container {{
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                pointer-events: none;
-                z-index: 10000;
-            }}
-            
-            /* 炸弹上升动画 */
-            .bomb-emoji {{
-                position: absolute;
-                bottom: -100px;
-                font-size: 40px;
-                opacity: 0;
-            }}
-            
-            @keyframes float-bomb {{
-                0% {{ bottom: -50px; opacity: 1; transform: scale(1); content: '💣'; }}
-                50% {{ transform: scale(1.2) rotate(10deg); }}
-                70% {{ content: '💥'; transform: scale(2); opacity: 1; }}
-                100% {{ bottom: 110vh; opacity: 0; transform: scale(3); }}
-            }}
-
-            /* 文字弹出动画 */
             @keyframes pop-and-shake-right {{
                 0% {{ transform: translateY(-50%) scale(0); opacity: 0; }}
                 10% {{ transform: translateY(-50%) scale(1); opacity: 1; }}
-                20% {{ transform: translateY(-48%) rotate(1deg); opacity: 1; }}
-                30% {{ transform: translateY(-52%) rotate(-1deg); opacity: 1; }}
+                20% {{ transform: translateY(-49%) rotate(1deg); opacity: 1; }}
+                30% {{ transform: translateY(-51%) rotate(-1deg); opacity: 1; }}
                 50% {{ transform: translateY(-50%) scale(1); opacity: 1; }}
                 90% {{ transform: translateY(-50%) scale(0.9); opacity: 1; }}
                 100% {{ transform: translateY(-50%) scale(0); opacity: 0; }}
