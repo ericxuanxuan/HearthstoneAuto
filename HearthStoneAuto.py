@@ -4,23 +4,22 @@ import pandas as pd
 # 页面配置
 st.set_page_config(page_title="8人游戏结算系统", layout="centered")
 
-# --- 满屏爆炸特效函数 (右侧持续喷发版) ---
+# --- 满屏爆炸特效函数 (手机优化右侧版) ---
 def trigger_feng_explosion():
     st.balloons() 
-    # 调整 left 值，让整体向右偏移 (主要集中在 60% - 85% 之间)
+    # 调整位置，让文字团贴着右侧边缘
+    # left 设置为 90% 以上，并配合 transform 确保不超出屏幕
     elements = [
-        {"top": "50%", "left": "70%", "size": "130px", "delay": "0s"},
-        {"top": "35%", "left": "70%", "size": "80px", "delay": "0.5s"},
-        {"top": "65%", "left": "70%", "size": "90px", "delay": "1s"},
-        {"top": "50%", "left": "60%", "size": "70px", "delay": "1.5s"},
-        {"top": "50%", "left": "85%", "size": "100px", "delay": "2s"},
-        {"top": "38%", "left": "62%", "size": "60px", "delay": "0.3s"},
-        {"top": "38%", "left": "78%", "size": "85px", "delay": "0.8s"},
-        {"top": "62%", "left": "62%", "size": "75px", "delay": "1.3s"},
-        {"top": "62%", "left": "78%", "size": "95px", "delay": "1.8s"},
-        {"top": "45%", "left": "68%", "size": "110px", "delay": "2.2s"},
-        {"top": "55%", "left": "72%", "size": "80px", "delay": "2.5s"},
-        {"top": "30%", "left": "70%", "size": "65px", "delay": "0.1s"},
+        {"top": "50%", "left": "95%", "size": "90px", "delay": "0s"},
+        {"top": "35%", "left": "92%", "size": "60px", "delay": "0.5s"},
+        {"top": "65%", "left": "93%", "size": "70px", "delay": "1s"},
+        {"top": "42%", "left": "90%", "size": "50px", "delay": "1.5s"},
+        {"top": "58%", "left": "94%", "size": "80px", "delay": "2s"},
+        {"top": "25%", "left": "92%", "size": "45px", "delay": "0.3s"},
+        {"top": "75%", "left": "91%", "size": "55px", "delay": "0.8s"},
+        {"top": "45%", "left": "95%", "size": "75px", "delay": "2.2s"},
+        {"top": "55%", "left": "90%", "size": "65px", "delay": "2.5s"},
+        {"top": "15%", "left": "93%", "size": "40px", "delay": "0.1s"},
     ]
     
     html_content = ""
@@ -30,7 +29,7 @@ def trigger_feng_explosion():
             position: fixed;
             top: {el['top']};
             left: {el['left']};
-            transform: translate(-50%, -50%);
+            transform: translate(-100%, -50%); /* 关键：向左偏移，确保右侧不溢出 */
             z-index: {10000 + i};
             pointer-events: none;
             animation: pop-and-shake 3s infinite {el['delay']};
@@ -39,10 +38,11 @@ def trigger_feng_explosion():
             <h1 style="
                 font-size: {el['size']};
                 color: #FF0000;
-                text-shadow: 3px 3px 10px #000, 0 0 30px #FF4B4B;
-                font-family: 'Microsoft YaHei';
+                text-shadow: 2px 2px 8px #000, 0 0 20px #FF4B4B;
+                font-family: 'Microsoft YaHei', sans-serif;
                 white-space: nowrap;
                 margin: 0;
+                font-weight: bold;
             ">
                 日你个冯！！！
             </h1>
@@ -53,14 +53,13 @@ def trigger_feng_explosion():
         {html_content}
         <style>
             @keyframes pop-and-shake {{
-                0% {{ transform: translate(-50%, -50%) scale(0); opacity: 0; }}
-                10% {{ transform: translate(-50%, -50%) scale(1.2); opacity: 1; }}
-                20% {{ transform: translate(-52%, -48%) rotate(2deg); opacity: 1; }}
-                30% {{ transform: translate(-48%, -52%) rotate(-2deg); opacity: 1; }}
-                40% {{ transform: translate(-51%, -49%) rotate(1deg); opacity: 1; }}
-                50% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
-                90% {{ transform: translate(-50%, -50%) scale(0.9); opacity: 1; }}
-                100% {{ transform: translate(-50%, -50%) scale(0); opacity: 0; }}
+                0% {{ transform: translate(-100%, -50%) scale(0); opacity: 0; }}
+                10% {{ transform: translate(-100%, -50%) scale(1.1); opacity: 1; }}
+                20% {{ transform: translate(-102%, -48%) rotate(1deg); opacity: 1; }}
+                30% {{ transform: translate(-98%, -52%) rotate(-1deg); opacity: 1; }}
+                50% {{ transform: translate(-100%, -50%) scale(1); opacity: 1; }}
+                90% {{ transform: translate(-100%, -50%) scale(0.9); opacity: 1; }}
+                100% {{ transform: translate(-100%, -50%) scale(0); opacity: 0; }}
             }}
         </style>
     """
