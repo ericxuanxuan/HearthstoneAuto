@@ -4,24 +4,23 @@ import pandas as pd
 # 页面配置
 st.set_page_config(page_title="8人游戏结算系统", layout="centered")
 
-# --- 满屏爆炸特效函数 (持续喷发版) ---
+# --- 满屏爆炸特效函数 (右侧持续喷发版) ---
 def trigger_feng_explosion():
     st.balloons() 
-    # 定义12个不同的位置和延迟，形成环绕中心的持续喷发感
-    # top, left 分布在中心 50% 的上下左右 20% 范围内
+    # 调整 left 值，让整体向右偏移 (主要集中在 60% - 85% 之间)
     elements = [
-        {"top": "50%", "left": "50%", "size": "120px", "delay": "0s"},
-        {"top": "35%", "left": "50%", "size": "80px", "delay": "0.5s"},
-        {"top": "65%", "left": "50%", "size": "90px", "delay": "1s"},
-        {"top": "50%", "left": "30%", "size": "70px", "delay": "1.5s"},
-        {"top": "50%", "left": "70%", "size": "100px", "delay": "2s"},
-        {"top": "38%", "left": "35%", "size": "60px", "delay": "0.3s"},
-        {"top": "38%", "left": "65%", "size": "85px", "delay": "0.8s"},
-        {"top": "62%", "left": "35%", "size": "75px", "delay": "1.3s"},
-        {"top": "62%", "left": "65%", "size": "95px", "delay": "1.8s"},
-        {"top": "45%", "left": "45%", "size": "110px", "delay": "2.2s"},
-        {"top": "55%", "left": "55%", "size": "80px", "delay": "2.5s"},
-        {"top": "30%", "left": "40%", "size": "65px", "delay": "0.1s"},
+        {"top": "50%", "left": "70%", "size": "130px", "delay": "0s"},
+        {"top": "35%", "left": "70%", "size": "80px", "delay": "0.5s"},
+        {"top": "65%", "left": "70%", "size": "90px", "delay": "1s"},
+        {"top": "50%", "left": "60%", "size": "70px", "delay": "1.5s"},
+        {"top": "50%", "left": "85%", "size": "100px", "delay": "2s"},
+        {"top": "38%", "left": "62%", "size": "60px", "delay": "0.3s"},
+        {"top": "38%", "left": "78%", "size": "85px", "delay": "0.8s"},
+        {"top": "62%", "left": "62%", "size": "75px", "delay": "1.3s"},
+        {"top": "62%", "left": "78%", "size": "95px", "delay": "1.8s"},
+        {"top": "45%", "left": "68%", "size": "110px", "delay": "2.2s"},
+        {"top": "55%", "left": "72%", "size": "80px", "delay": "2.5s"},
+        {"top": "30%", "left": "70%", "size": "65px", "delay": "0.1s"},
     ]
     
     html_content = ""
