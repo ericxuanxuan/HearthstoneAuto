@@ -9,7 +9,7 @@ def trigger_celebration(winner_name, amount):
     # 弹出气球
     st.balloons()
     
-    # 中央大字特效
+    # 中央大字特效（带 5 秒自动消失动画）
     celebration_html = f"""
     <div style="
         position: fixed;
@@ -18,21 +18,24 @@ def trigger_celebration(winner_name, amount):
         transform: translate(-50%, -50%);
         z-index: 9999;
         text-align: center;
-        background-color: rgba(255, 255, 255, 0.95);
+        background-color: rgba(255, 255, 255, 0.98);
         padding: 40px;
         border-radius: 20px;
         border: 8px solid #FFD700;
-        box-shadow: 0 0 30px rgba(0,0,0,0.3);
-        animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        pointer-events: none; /* 防止遮挡点击 */
+        animation: pop-stay-fade 5s forwards;
     ">
         <h1 style="color: #FF4B4B; font-size: 60px; margin: 0; font-family: 'Microsoft YaHei';">🎉 恭喜 {winner_name}！！ 🎉</h1>
         <p style="font-size: 30px; color: #333; margin-top: 20px;">本场大赢家，共赢取了 <b>{amount}</b> 元！</p>
     </div>
 
     <style>
-        @keyframes pop-in {{
+        @keyframes pop-stay-fade {{
             0% {{ transform: translate(-50%, -50%) scale(0.5); opacity: 0; }}
-            100% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
+            10% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
+            90% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
+            100% {{ transform: translate(-50%, -50%) scale(0.9); opacity: 0; visibility: hidden; }}
         }}
     </style>
     """
@@ -165,7 +168,7 @@ if st.session_state.rounds:
                 elif amt < 0: st.error(f"**{p}**：最终输了 `{abs(amt)}` 元")
                 else: st.write(f"**{p}**：不输不赢")
 
-        # --- 新彩蛋逻辑：寻找大赢家 ---
+        # --- 彩蛋逻辑：寻找大赢家 ---
         if balances:
             # 找出赢钱最多的玩家
             top_winner = max(balances, key=balances.get)
