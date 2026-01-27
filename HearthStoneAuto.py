@@ -4,63 +4,39 @@ import pandas as pd
 # 页面配置
 st.set_page_config(page_title="8人游戏结算系统", layout="centered")
 
-# --- 满屏文字特效函数 (右侧精简版) ---
-def trigger_feng_explosion():
-    # 锚点设在极右侧 (right: 2%)，字号使用较小的 vw 单位
-    elements = [
-        {"top": "50%", "right": "2%", "size": "14vw", "delay": "0s"},
-        {"top": "35%", "right": "4%", "size": "9vw", "delay": "0.5s"},
-        {"top": "65%", "right": "3%", "size": "10vw", "delay": "1s"},
-        {"top": "42%", "right": "6%", "size": "7vw", "delay": "1.5s"},
-        {"top": "58%", "right": "2%", "size": "11vw", "delay": "2s"},
-        {"top": "25%", "right": "5%", "size": "6vw", "delay": "0.3s"},
-        {"top": "75%", "right": "4%", "size": "8vw", "delay": "0.8s"},
-        {"top": "15%", "right": "5%", "size": "5vw", "delay": "0.1s"},
-    ]
+# --- 庆祝特效函数 ---
+def trigger_celebration(winner_name, amount):
+    # 弹出气球
+    st.balloons()
     
-    html_content = ""
-    for i, el in enumerate(elements):
-        html_content += f"""
-        <div style="
-            position: fixed;
-            top: {el['top']};
-            right: {el['right']};
-            transform: translateY(-50%);
-            z-index: {10000 + i};
-            pointer-events: none;
-            animation: pop-and-shake-right 3s infinite {el['delay']};
-            opacity: 0;
-            text-align: right;
-        ">
-            <h1 style="
-                font-size: {el['size']};
-                color: #FF0000;
-                text-shadow: 1px 1px 5px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-                font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
-                white-space: nowrap;
-                margin: 0;
-                font-weight: 900;
-            ">
-                日你个冯！！！
-            </h1>
-        </div>
-        """
+    # 中央大字特效
+    celebration_html = f"""
+    <div style="
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 20px;
+        border: 8px solid #FFD700;
+        box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    ">
+        <h1 style="color: #FF4B4B; font-size: 60px; margin: 0; font-family: 'Microsoft YaHei';">🎉 恭喜 {winner_name}！！ 🎉</h1>
+        <p style="font-size: 30px; color: #333; margin-top: 20px;">本场大赢家，共赢取了 <b>{amount}</b> 元！</p>
+    </div>
 
-    full_html = f"""
-        {html_content}
-        <style>
-            @keyframes pop-and-shake-right {{
-                0% {{ transform: translateY(-50%) scale(0); opacity: 0; }}
-                10% {{ transform: translateY(-50%) scale(1); opacity: 1; }}
-                20% {{ transform: translateY(-49%) rotate(1deg); opacity: 1; }}
-                30% {{ transform: translateY(-51%) rotate(-1deg); opacity: 1; }}
-                50% {{ transform: translateY(-50%) scale(1); opacity: 1; }}
-                90% {{ transform: translateY(-50%) scale(0.9); opacity: 1; }}
-                100% {{ transform: translateY(-50%) scale(0); opacity: 0; }}
-            }}
-        </style>
+    <style>
+        @keyframes pop-in {{
+            0% {{ transform: translate(-50%, -50%) scale(0.5); opacity: 0; }}
+            100% {{ transform: translate(-50%, -50%) scale(1); opacity: 1; }}
+        }}
+    </style>
     """
-    st.markdown(full_html, unsafe_allow_html=True)
+    st.markdown(celebration_html, unsafe_allow_html=True)
 
 st.title("🎮 炉石战旗游戏转账结算系统")
 st.info("规则：固定8个席位名次。第1名收钱翻倍，速8付钱翻倍，名次相同不转账。")
@@ -189,13 +165,11 @@ if st.session_state.rounds:
                 elif amt < 0: st.error(f"**{p}**：最终输了 `{abs(amt)}` 元")
                 else: st.write(f"**{p}**：不输不赢")
 
-        # --- 彩蛋检测 ---
-        feng_wins = False
-        for p, amt in balances.items():
-            p_lower = p.lower()
-            if any(key in p_lower for key in ["冯", "feng", "fy"]) and amt > 0:
-                feng_wins = True
-                break
-        
-        if feng_wins:
-            trigger_feng_explosion()
+        # --- 新彩蛋逻辑：寻找大赢家 ---
+        if balances:
+            # 找出赢钱最多的玩家
+            top_winner = max(balances, key=balances.get)
+            top_amount = balances[top_winner]
+            
+            if top_amount > 0:
+                trigger_celebration(top_winner, top_amount)
